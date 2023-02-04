@@ -202,8 +202,16 @@ const cakePrompts = {
 
     /* CODE GOES HERE */
 
+    const inventory = cakes.map((cake) => {
+      return {flavor: cake.cakeFlavor, inStock: cake.inStock}
+    })
+    return inventory
+
     // Annotation:
-    // Write your annotation here as a comment
+    // I wonder if similarly this could be reduce or map
+    //we need an array of objects that mirrors the original array, but with less properties. I dont think filter would be the move, because we want all the objects to be present
+
+    //Okay, so here we are returning an object, which with each iteration an object is created with an element from the original (cakes) array, and saved to a new array. the object contains two of the properties from the original object, accessed through the currentValue (cake) parameter of map()'s callback function
   },
 
   onlyInStock() {
