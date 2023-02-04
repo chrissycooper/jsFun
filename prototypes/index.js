@@ -70,7 +70,7 @@ const kittyPrompts = {
     return olderPets;
 
     //we want an array of the same length, so maybe map()?
-    //wherer the age property goes up by 2
+    //where the age property goes up by 2
   }
 };
 
@@ -108,6 +108,7 @@ const clubPrompts = {
 
     // Annotation:
     // Write your annotation here as a comment
+    //oh boy, so we need to figure out which clubs each person belongs to first, maybe using includes(), which will return true/false,
   }
 };
 
@@ -141,9 +142,35 @@ const modPrompts = {
 
     /* CODE GOES HERE */
 
+
+    const teacherRatio = mods.map((element) => {
+      const ratio = element.students / element.instructors;
+      return {mod: element.mod, studentsPerInstructor: ratio}
+    })
+
+    // const teacherRatio = mods.reduce((acc, element) => {
+    //   const ratio = element.students / element.instructors;
+    //   acc.push({mod: element.mod, studentsPerInstructor: ratio})
+    //   return acc;
+    // }, [])
+
+    return teacherRatio;
+
+      // console.log(teacherRatio)
     // Annotation:
     // Write your annotation here as a comment
-  }
+    //we want to return an array of objects that is the same length, but with one less key/value pair. The second property will be a combination of the two after a simple division expression. 
+
+    //reduce? this takes in an accumulator and current value parameter. I set a variable to equal the math operation, the current value's (in this case it is an object) number of students property divided by the current value's number of instructors property, which gives us the num of students per professor
+
+    //then the accumulator value is using the initial value param, which is set to an empty array. Since it is set to an empty array, we can use .push() to help it accumulate. for each element, a new object is created that recreates the first property, and a second property is created that uses the ratio variable
+
+    //the accumulator is returned so that the next iteration can add to the array, bringing along the object that was just created
+
+    //finally the teacherRatio variable that the reduce method was saved to must be returned as well
+
+    //I also solved it with .map(), very similar set up, except that setting the initial value to an array isn't necessary, and neither is using .push(), so map() is the more elegant solution in this case
+}
 };
 
 
