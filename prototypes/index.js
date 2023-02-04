@@ -20,26 +20,35 @@ const { dinosaurs, humans, movies } = require('./datasets/dinosaurs');
 
 // DATASET: kitties from ./datasets/kitties
 const kittyPrompts = {
-  orangePetNames() {
+  orangePetNames(pets) {
     // Return an array of just the names of kitties who are orange e.g.
         // ['Tiger', 'Snickers']
 
         /* CODE GOES HERE */
+       const orange = pets.filter(element => element.color === 'orange').map(pet => pet.name);
+
+        return orange;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // first I wrote these methods out the long way, then I shortened it to this more concise syntax. I knew I wanted a smaller subset of cat objects who had orange hair, which led me towards filter. then I knew the output needed to be an array of strings of the same length, so I utilized map to print only the cat's names
   },
 
-  sortByAge() {
+  sortByAge(pets) {
     // Sort the kitties by their age
 
     /* CODE GOES HERE */
+      const sortedPets = pets.sort((a, b) => {
+         return b.age - a.age;
+      })
+      return sortedPets;
 
     // Annotation:
     // Write your annotation here as a comment
+    // knowing that we have a an array of objects and that we wanted to sort them by the age property, which is a number, a simple arithmetic sort seemed like the best move
+    //we have a callback function in sort, which is sorting them in decending order. Looking at the test helped me realize they were looking for oldest to youngest cat
   },
 
-  growUp() {
+  growUp(pets) {
     // Return an array of kitties who have all grown up by 2 years e.g.
     // [{
     //   name: 'Felicia',
@@ -54,6 +63,14 @@ const kittyPrompts = {
     // ...etc]
 
     /* CODE GOES HERE */
+    const olderPets = pets.map((pet) => {
+      pet.age += 2;
+      return pet;
+    })
+    return olderPets;
+
+    //we want an array of the same length, so maybe map()?
+    //wherer the age property goes up by 2
   }
 };
 
@@ -492,8 +509,14 @@ const breweryPrompts = {
 
     /* CODE GOES HERE */
 
+    const smallBreweries = breweries.map((brewery) => {
+      return {name: brewery.name, beerCount: brewery.beers.length}
+    })
+ return smallBreweries
     // Annotation:
-    // Write your annotation here as a comment
+    // map? - we'll want the same number of elements **
+    //for each? - push an object into
+    //the smaller objects, 2 key value pairs - name:name, beers: beers.length
   },
 
   getSingleBreweryBeerCount(breweryName) {
