@@ -236,9 +236,17 @@ const cakePrompts = {
     // ]
 
     /* CODE GOES HERE */
+    const availableCakes = cakes.filter((cake) => {
+      return cake.inStock;
+    })
+    
+    return availableCakes;
 
     // Annotation:
     // Write your annotation here as a comment
+    //this might be a good place to use filter, we are trying to return cakes that are in stock, so they have a truthy inStock value
+    //filter takes in a callback function as a parameter, and that function takes in an argument of the current element, and returns a boolean value 
+
   },
 
   totalInventory() {
@@ -246,9 +254,15 @@ const cakePrompts = {
     // 59
 
     /* CODE GOES HERE */
+    const totalCakes = cakes.reduce((acc, cake) => {
+      return acc + cake.inStock;
+    }, 0)
 
+    return totalCakes;
     // Annotation:
     // Write your annotation here as a comment
+    //we want a single value, so I think reduce is the move here
+    //we need to return the value of all the inStock properties of each object added togehter
   },
 
   allToppings() {
@@ -257,9 +271,26 @@ const cakePrompts = {
     // ['dutch process cocoa', 'toasted sugar', 'smoked sea salt', 'berries', ..etc]
 
     /* CODE GOES HERE */
+    const allToppings = cakes.reduce((acc, cake) => {
+      return acc.concat(cake.toppings)
+    }, [])
+    const helpMe = [];
+
+    allToppings.forEach((item) => {
+      if(!helpMe.includes(item)) {
+        helpMe.push(item)
+      }
+    })
+    
+    console.log(helpMe)
+    return helpMe;
+
+    //You got stuck here
 
     // Annotation:
     // Write your annotation here as a comment
+    //can use includes() to check if something is already added? 
+    //So maybe start with 
   },
 
   groceryList() {
@@ -274,6 +305,12 @@ const cakePrompts = {
     // }
 
     /* CODE GOES HERE */
+
+    
+
+    console.log(list)
+
+    //reduce
 
     // Annotation:
     // Write your annotation here as a comment

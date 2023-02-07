@@ -191,7 +191,7 @@ describe("PROTOTYPES", () => {
       }])
     });
 
-    it.skip("onlyInStock", () => {
+    it("onlyInStock", () => {
       const e = cakePrompts.onlyInStock();
 
       expect(e).to.deep.equal([{
@@ -221,13 +221,13 @@ describe("PROTOTYPES", () => {
       }])
     });
 
-    it.skip("totalInventory", () => {
+    it("totalInventory", () => {
       const e = cakePrompts.totalInventory();
 
       expect(e).to.deep.equal(59)
     });
 
-    it.skip("allToppings", () => {
+    it("allToppings", () => {
       const e = cakePrompts.allToppings();
 
       expect(e).to.deep.equal(["dutch process cocoa", "toasted sugar", "smoked sea salt", "berries", "edible flowers", "mint", "cranberry", "crystallized ginger"])
