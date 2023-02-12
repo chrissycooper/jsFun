@@ -371,6 +371,9 @@ const classPrompts = {
     // ]
 
     /* CODE GOES HERE */
+    const feClasses = classrooms.filter(room => room.program === 'FE')
+
+    return feClasses
 
     // Annotation:
     // Write your annotation here as a comment
@@ -386,17 +389,35 @@ const classPrompts = {
 
     /* CODE GOES HERE */
 
+    const capacities = classrooms.reduce((acc, currentValue) => {
+      //if the program is "FE" add the capacity to the fe property
+      //else if BE then add the capacity to the be property
+      if (currentValue.program === 'FE') {
+        acc.feCapacity += currentValue.capacity
+      } else {
+        acc.beCapacity += currentValue.capacity
+      }
+      return acc
+    }, {feCapacity: 0, beCapacity: 0})
+    return capacities
+
     // Annotation:
-    // Write your annotation here as a comment
+    // I wasn't sure on this one how to create the starting values for this object, until I realized I could put them directly into the initial value. But from there it's fairly simple. check for the program property of the current value  and add the value based on that. then return the accumulator
   },
 
   sortByCapacity() {
     // Return the array of classrooms sorted by their capacity (least capacity to greatest)
 
     /* CODE GOES HERE */
+    const sorted = classrooms.sort((a, b) => {
+      return a.capacity - b.capacity
+    })
+
+    // console.log(sorted)
+    return sorted
 
     // Annotation:
-    // Write your annotation here as a comment
+    // sort the capacity property of the current value (a classroom) using the comparison callback of sort
   }
 };
 
