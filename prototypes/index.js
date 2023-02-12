@@ -311,15 +311,35 @@ const cakePrompts = {
     // }
 
     /* CODE GOES HERE */
+    //use full non edited list of toppings, for each in that list, check if theres a key that matches it, if yes ++, if no create a key value pair with the value of 1
 
+    let allToppings = cakes.map((cake) => {
+      return cake.toppings
+    })
+
+    // console.log(allToppings.join().split(','))
+    allToppings = allToppings.join().split(',')
     
+    const groceryList = allToppings.reduce((acc, topping) => {
+      let keys = Object.keys(acc)
+      
+      if(keys.includes(topping)) {
+        acc[topping]++;
+      } else {
+        acc[topping] = 1;
+      }
 
-    //come back later
+      return acc
+    }, {})
+
+    return groceryList
 
     
 
     // Annotation:
-    // Write your annotation here as a comment
+    // This one was tricky. first I created an array of all the toppings arrays with map. Then I reassigned allToppings to be a flattened version of that nested array. I wanted to practice join and split, so I ran allToppings.join() which will return a string of all the values of those nested arrays crunched together. Then looking at that data with a console.log, I could see that I could split them via a comma and end up with an array of string values of each of the toppings. 
+
+    //then I set a new variable equal to that list of toppings with a reduce running on it. the reduce first creates a variable of keys, which creates an array of the keys of the accumulator. First go around it would be empty. Then theres a conditional which checks if that lists of keys includes the currentValue (topping, which is one of the string values of the large toppings list). If the acc does already have the currentValue as a key, then the value is incremented by one. If the accumlator doesn't already have that key, it is created with a value of 1. I expect that the first few go arounds would create more keys, and as it iterates through, more values would update. 
   }
 };
 
