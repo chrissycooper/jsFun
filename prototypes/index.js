@@ -271,9 +271,17 @@ const cakePrompts = {
     // ['dutch process cocoa', 'toasted sugar', 'smoked sea salt', 'berries', ..etc]
 
     /* CODE GOES HERE */
-    const allToppings = cakes.reduce((acc, cake) => {
-      return acc.concat(cake.toppings)
-    }, [])
+    // const allToppings = cakes.reduce((acc, cake) => {
+    //   return acc.concat(cake.toppings)
+    // }, [])
+
+    let allToppings = cakes.map((cake) => {
+      return cake.toppings
+    })
+
+    allToppings = allToppings.join().split(",")
+    // console.log(allToppings)
+
     const helpMe = [];
 
     allToppings.forEach((item) => {
@@ -282,10 +290,8 @@ const cakePrompts = {
       }
     })
     
-    console.log(helpMe)
+    
     return helpMe;
-
-    //You got stuck here
 
     // Annotation:
     // Write your annotation here as a comment
@@ -308,9 +314,9 @@ const cakePrompts = {
 
     
 
-    console.log(list)
+    //come back later
 
-    //reduce
+    
 
     // Annotation:
     // Write your annotation here as a comment
@@ -565,9 +571,16 @@ const breweryPrompts = {
     // 40
 
     /* CODE GOES HERE */
+    //reduce, becasue we want one value. 
+    const allBeers = breweries.reduce((acc, currentValue) => {
+      return acc + currentValue.beers.length
+    }, 0)
+    
+    return allBeers;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // we ran reduce over the breweries array, and for each object in that array, we accessed the beers property, which is another array, and accessed its length property to get the full number of beers for that brewery. And in each loop that number is carried over by and added to the accumulator.
+
   },
 
   getBreweryBeerCount() {
@@ -586,8 +599,7 @@ const breweryPrompts = {
     })
  return smallBreweries
     // Annotation:
-    // map? - we'll want the same number of elements **
-    //for each? - push an object into
+    //map returns a new array with the same number of elements as the previous array, and here we wanted a new array with some similar properties, but simplified. so for each loop, we are creating and returning a new object that accesses the brewery's name, and its beers array's length value.
     //the smaller objects, 2 key value pairs - name:name, beers: beers.length
   },
 
@@ -595,12 +607,18 @@ const breweryPrompts = {
     // Return a number that is the count of beers that the specified
     // brewery has e.g.
     // given 'Ratio Beerworks', return 5
+    //we could do find, to find the object that matches the name and then return beers.length?
 
+    const brewery = breweries.find((brewery) => {
+      return brewery.name === breweryName
+    })
+    
+    return brewery.beers.length
 
     /* CODE GOES HERE */
 
     // Annotation:
-    // Write your annotation here as a comment
+    // here we are setting a variable to be equal to the output of breweries.find(). Find's callback function returns a boolean, but the method itself returns the first element that passes the condition. in this case, we want to find the brewery that matches the name passed into the overal function. once we've caught that object in our variable, we can return the length of it's beers property array, and return that number
   },
 
   findHighestAbvBeer() {
@@ -608,10 +626,30 @@ const breweryPrompts = {
     // e.g.
     // { name: 'Barrel Aged Nature\'s Sweater', type: 'Barley Wine', abv: 10.9, ibu: 40 }
 
+    //maybe sort them and then return the first one? will they need to be all put into one array first? reduce beers into one array
+    // const beers = breweries.flatMap((brewery) => {
+    //   return brewery.beers
+    // })
+
+    // const beers = breweries.map((brewery) => {
+    //   return brewery.beers
+    // }).flat()
+    
+    const beers = breweries.flatMap((brewery) => {
+      return brewery.beers
+    })
+
+    beers.sort((a,b) => {
+     return b.abv - a.abv
+    })
+
+    return beers[0]
+
     /* CODE GOES HERE */
 
     // Annotation:
-    // Write your annotation here as a comment
+    // I'm not sure if i could do this without flatMap()
+    //beers is being set equal to a map of breweries, or an array of the same length, that gets flattened one level. It will then be an array of all the beers in all the breweries. then I sorted the beers by their abv value in descending order and returned the first beer in the array.
   }
 };
 
@@ -631,9 +669,11 @@ const boardGamePrompts = {
     // ["Chess", "Catan", "Checkers", "Pandemic", "Battle Ship", "Azul", "Ticket to Ride"]
 
     /* CODE GOES HERE */
+   const names = boardGames[type].map(game => game.name)
+   return names
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Boardgames is an object, with three keys who have arrays as their values. We can pass in the type to acccess the key that we want via bracket notation, then map the array inside to return an array of all the names of that type. 
   },
 
   listGamesAlphabetically(type) {
@@ -643,9 +683,12 @@ const boardGamePrompts = {
     // ["Candy Land", "Connect Four", "Operation", "Trouble"]
 
     /* CODE GOES HERE */
+    const names = boardGames[type].map(game => game.name).sort()
+    
+    return names
 
     // Annotation:
-    // Write your annotation here as a comment
+    // very similar to the last one, just added on a .sort() to sort the names alphabetically. With sorting words alphabetically you dont have to add anyhting to the callback, and if you wanted to reverse order the names, you could add .reverse()
   },
 
   findHighestRatedGamesByType(type) {
@@ -654,9 +697,14 @@ const boardGamePrompts = {
     // { name: 'Codenames', rating: 7.4, maxPlayers: 8 },
 
     /* CODE GOES HERE */
+    const games = boardGames[type].sort((a,b) => {
+      return b.rating - a.rating
+    })
+   
+    return games[0]
 
     // Annotation:
-    // Write your annotation here as a comment
+    // first we access the desired array in the boardGames object with bracket notation, then we are sorting that accessed array by its rating property, which is a number, so we are using the longer version of sort. and we're sorting in descending order so that we can return the first object which will have the highest rating.
   },
 
   averageScoreByType(type) {
@@ -665,9 +713,13 @@ const boardGamePrompts = {
     // note: do not worry about rounding your result.
 
     /* CODE GOES HERE */
+    const avg = boardGames[type].reduce((acc, game) => {
+      return acc + game.rating
+    }, 0)
+    return avg/boardGames[type].length
 
     // Annotation:
-    // Write your annotation here as a comment
+    // we set a variable (avg) equal to the boardGames object's key that is passed in to access a specific array. Reduce is being run on that array to add upp all the ratings. The accumulator is set to zero at first, and then the currentValue(game object) is being used to acces that rating property. 
   },
 
   averageScoreByTypeAndPlayers(type, maximumPlayers) {
@@ -677,9 +729,16 @@ const boardGamePrompts = {
     // note: do not worry about rounding your result.
 
     /* CODE GOES HERE */
+    const avg = boardGames[type].filter((game) => {
+      return game.maxPlayers === maximumPlayers
+    }).reduce((acc, game) => {
+      return acc + game.rating
+    }, 0)
+
+    return avg
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Very similar scenario to the one beofre, though here we are adding another iterator (filter) to remove any games that don't match the max players passed in. this could easily be made more inclusive by changing the strict equals to be either queries for less players or more players
   }
 };
 

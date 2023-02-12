@@ -444,7 +444,7 @@ describe("PROTOTYPES", () => {
   });
 
   describe("Brewery Prompts", () => {
-    it.skip("getBeerCount", () => {
+    it("getBeerCount", () => {
       const e = breweryPrompts.getBeerCount();
 
       expect(e).to.deep.equal(40)
@@ -471,7 +471,7 @@ describe("PROTOTYPES", () => {
       }])
     });
 
-    it.skip("getSingleBreweryBeerCount", () => {
+    it("getSingleBreweryBeerCount", () => {
       const ratioCount = breweryPrompts.getSingleBreweryBeerCount('Ratio Beerworks');
       const plattCount = breweryPrompts.getSingleBreweryBeerCount('Platt Park Brewing Co.');
 
@@ -479,7 +479,7 @@ describe("PROTOTYPES", () => {
       expect(plattCount).to.equal(7);
     });
 
-    it.skip("findHighestAbvBeer", () => {
+    it("findHighestAbvBeer", () => {
       const e = breweryPrompts.findHighestAbvBeer();
 
       expect(e).to.deep.equal({
@@ -492,7 +492,7 @@ describe("PROTOTYPES", () => {
   });
 
   describe("Board Game Prompts", () => {
-    it.skip("listGames", () => {
+    it("listGames", () => {
       const strategyGames = boardGamePrompts.listGames('strategy');
       const childrensGames = boardGamePrompts.listGames('childrens');
       const partyGames = boardGamePrompts.listGames('party');
@@ -502,7 +502,7 @@ describe("PROTOTYPES", () => {
       expect(partyGames).to.deep.equal(["Werewolf", "Cards Against Humanity", "Codenames", "Sushi Go! Party", "Tsuro"]);
     });
 
-    it.skip("listGamesAlphabetically", () => {
+    it("listGamesAlphabetically", () => {
       const strategyGames = boardGamePrompts.listGamesAlphabetically('strategy');
       const childrensGames = boardGamePrompts.listGamesAlphabetically('childrens');
       const partyGames = boardGamePrompts.listGamesAlphabetically('party');
@@ -512,7 +512,7 @@ describe("PROTOTYPES", () => {
       expect(partyGames).to.deep.equal(["Cards Against Humanity", "Codenames", "Sushi Go! Party", "Tsuro", "Werewolf"]);
     });
 
-    it.skip("findHighestRatedGamesByType", () => {
+    it("findHighestRatedGamesByType", () => {
       const highestStrategy = boardGamePrompts.findHighestRatedGamesByType('strategy');
       const highestChildrens = boardGamePrompts.findHighestRatedGamesByType('childrens');
       const highestParty = boardGamePrompts.findHighestRatedGamesByType('party');
@@ -522,7 +522,7 @@ describe("PROTOTYPES", () => {
       expect(highestParty).to.deep.equal({ name: 'Codenames', rating: 7.4, maxPlayers: 8 });
     });
 
-    it.skip("averageScoreByType", () => {
+    it("averageScoreByType", () => {
       const avScoreStrat = boardGamePrompts.averageScoreByType('strategy');
       const avScoreChildren = boardGamePrompts.averageScoreByType('childrens');
       const avScoreParty = boardGamePrompts.averageScoreByType('party');
