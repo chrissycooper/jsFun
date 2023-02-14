@@ -494,9 +494,12 @@ const weatherPrompts = {
     // [ 40, 40, 44.5, 43.5, 57, 35, 65.5, 62, 14, 46.5 ]
 
     /* CODE GOES HERE */
-
+    let averages = weather.map((location) => {
+      return (location.temperature.high + location.temperature.low)/2
+    })
+    return averages
     // Annotation:
-    // Write your annotation here as a comment
+    // I used map because we wanted to return the same amount of elements
   },
 
   findSunnySpots() {
@@ -507,9 +510,17 @@ const weatherPrompts = {
     // 'Raleigh, North Carolina is mostly sunny.' ]
 
     /* CODE GOES HERE */
+    const sunnySpots = weather.filter(site => {
+      return site.type.includes('sunny')
+    })
+  
+    const sentences = sunnySpots.map(spot => {
+      return `${spot.location} is ${spot.type}.`
+    })
+    return sentences
 
     // Annotation:
-    // Write your annotation here as a comment
+    // first I filtered the sites for the weathers that included the word sunny, this will also catch places that are mostly sunny. Then I used that new filtered array to map a new array full of sentences that interpolated the location property and the spot property
   },
 
   findHighestHumidity() {
@@ -522,9 +533,13 @@ const weatherPrompts = {
     // }
 
     /* CODE GOES HERE */
-
+    const sortedByHum = weather.sort((a, b) => {
+      return b.humidity - a.humidity
+    })
+    
+    return sortedByHum[0]
     // Annotation:
-    // Write your annotation here as a comment
+    // we wanted the location object to be returned that had the highest humidity. Sort mutates the original array which is probably why this is the third and final problem in this set. I used the comparison callback function since we are sorting with a number. We wanted the highest humidity, so I sorted it in descending order. then returned the first object in that array.
 
   }
 };
