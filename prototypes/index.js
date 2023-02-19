@@ -562,10 +562,31 @@ const nationalParksPrompts = {
     //   parksVisited: ["Rocky Mountain", "Acadia", "Zion"]
     //}
 
-    /* CODE GOES HERE */
+  //   const parksToVisit = nationalParks.filter(park => !park.visited).map(park => park.name)
+  //   const parksVisited = nationalParks.filter(park => park.visited).map(park => park.name)
+
+  //  return {
+  //   parksToVisit: parksToVisit,
+  //   parksVisited: parksVisited
+  //  }
+
+  const parkList = nationalParks.reduce((acc, park) => {
+    // if (park.visited) {
+    //   acc.parksVisited.push(park.name)
+    // } else {
+    //   acc.parksToVisit.push(park.name)
+    // }
+    park.visited ? acc.parksVisited.push(park.name) : acc.parksToVisit.push(park.name)
+    return acc
+  }, {parksToVisit: [], parksVisited: []})
+
+  return parkList
+
 
     // Annotation:
-    // Write your annotation here as a comment
+    //first off, i ran two filters for each list, one in the case that the park.visited property was false, and one in the case that it was true. Then chained a map iterator to get just the name of the park. THen I used those variables to create an object literal.
+    //second time around, I wanted to solve it with reduce. So, i knew I wanted to end up with an object, so I made the initial value an empty object at first. I quickly realized the logic was simplest for me if I added the properties as empty arrays to the initial value object. Then it was simply, if the park has been visited(if park.visited === true) then push it to the first property, if not, push it to the second
+    //last refactor, since we were working with a simple either/or I used a ternary operator to simplify the function.
   },
 
   getParkInEachState() {
@@ -577,11 +598,13 @@ const nationalParksPrompts = {
     // { Utah: 'Zion' },
     // { Florida: 'Everglades' } ]
 
-
-    /* CODE GOES HERE */
+    const parksByState = nationalParks.map(park => {
+      return {[park.location]: park.name}
+    })
+    return parksByState
 
     // Annotation:
-    // Write your annotation here as a comment
+    //fairly simple, since we wanted one object for each park with a value of the object saved in an array, one value as the key, one value as the value. I thought map was a good solution. For each item, i used the word park, we will return to the array an object with the information we want from each park
   },
 
   getParkActivities() {
@@ -601,9 +624,22 @@ const nationalParksPrompts = {
     //   'rock climbing' ]
 
     /* CODE GOES HERE */
+    //an array with all of the possible activities, removing duplicates
+    //I'm leaning toward reduce
+
+    const parktivities = nationalParks.reduce((acc, park) => {
+      park.activities.forEach(act => {
+        if(!acc.includes(act)) {
+          acc.push(act)
+        }
+      })
+      return acc
+    }, [])
+    
+    return parktivities
 
     // Annotation:
-    // Write your annotation here as a comment
+    // first pass i used a reduce that had a forEach running in it. We were given an array of objects that had an array as the value of one of its properties. We needed to look inside of the nested array, and check if each item was already included in the array being built by the reduce, and if not already included, add it to the array. I'm not sure how great of practice this nested iterator is. 
   }
 };
 
