@@ -94,7 +94,7 @@ const kittyPrompts = {
 
 // DATASET: clubs from ./datasets/clubs
 const clubPrompts = {
-  membersBelongingToClubs() {
+  membersBelongingToClubs(clubs) {
     // Your function should access the clubs data through a parameter (it is being passed as an argument in the test file)
     // Create an object whose keys are the names of people, and whose values are
     // arrays that include the names of the clubs that person is a part of. e.g.
@@ -104,11 +104,43 @@ const clubPrompts = {
     //   ...etc
     // }
 
+    //make an array of all the names, no duplicates
+   const members = clubs.reduce((acc, club) => {
+        club.members.forEach(member => {
+          if(!acc.includes(member)){
+            acc.push(member)
+          }
+        })
+        return acc
+    }, [])
+
+    //for each of the members we want to go through each club object and check if they are in the members property, if so we want to add that club.name to an array that belongs to the member
+
+  const clubsByPerson = members.reduce((acc, person) => {
+    clubsfilter = clubs.filter(club => club.members.includes(person)).map(club => club.club)
+    // console.log(person, clubsfilter)
+    acc[person] = clubsfilter
+    return acc
+  }, {})
+
+
+
+    //if each club.members includes that name, then add it to the array
+
+    return clubsByPerson
+
     /* CODE GOES HERE */
 
     // Annotation:
     // Write your annotation here as a comment
-    //oh boy, so we need to figure out which clubs each person belongs to first, maybe using includes(), which will return true/false,
+    //okay so we were given an array of objects. Each object is a club which has two properties: the club name (a string), and an array of strings that are the names of it's members. The prompt is asking for us to basically invert the data, transform this array into an object, where each property is a name of one of the students, and its value is an array of all the clubs they are a part of. 
+
+    //First, I decided I wanted an array of all the names of the students. I used reduce on the clubs array. In an attempt to remove duplicates, I ran a forEach on the members property of each club. So there's a nested iterator happening here, idk if that's bad practice. The forEach checks each element of the members array to see if the accumulator of the outer reduce already includes that name. If it doesn't include it, the forEach pushes the name to the accumulator. So for each one of the clubs/iterations of the clubs array by the reduce, there is 2-5 iterations through their member arrays to check for duplicates. 
+
+    //Then after i got this list of names, I was stuck for quite a while. I was playing with my cat about four hours after starting this problem, when I thought of a better way to conceptualize it. I knew we wanted to iterate through the clubs and check if each person was in the members property. I realized I could use filter to create an array for each person, the filter checked to see if each members property included that person's name, and if it did it stores it in a new array. Then we had to map that resulting array so that it was just the name properties instead of the whole object. Becuase filter will store the whole element that meets its condition no matter what. 
+
+    //I got unstuck after this section by trying to test to see if it was working properly by console logging each person, then the filtered array. Noticing that it matched what I wanted to be in the object almost perfectly, I felt like I was in a good place. I had to look up to remember how to create a new property on an existing object, i.e. object.propertyName = value. In this case it needed to be bracket notation so: object[variable] = value. Or more specifically for this problem: object[current person reduce is focusing on] = filteredArray.
+
   }
 };
 
@@ -430,7 +462,7 @@ const classPrompts = {
 // DATASET: books from './datasets/books
 
 const bookPrompts = {
-  removeViolence() {
+  removeViolence(bookData) {
     // Your function should access the books data through a parameter (it is being passed as an argument in the test file)
     // return an array of all book titles that are not horror or true crime. Eg:
 
@@ -442,9 +474,14 @@ const bookPrompts = {
 
 
     /* CODE GOES HERE */
+    //if the book.genre !== horror and not true crime, then add to 
+
+    filteredBooks = bookData.filter(book => book.genre !== 'Horror' && book.genre !== 'True Crime').map(book => book.title)
+
+    return filteredBooks;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // first I ran a filter that only passed those books that were both not horror and not true crime, and then I mapped them to just get the names
 
   },
   getNewBooks() {
@@ -635,7 +672,7 @@ const nationalParksPrompts = {
       })
       return acc
     }, [])
-    
+
     return parktivities
 
     // Annotation:
