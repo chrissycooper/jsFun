@@ -484,18 +484,22 @@ const bookPrompts = {
     // first I ran a filter that only passed those books that were both not horror and not true crime, and then I mapped them to just get the names
 
   },
-  getNewBooks() {
+  getNewBooks(books) {
     // return an array of objects containing all books that were
-    // published in the 90's and 00's. Inlucde the title and the year Eg:
+    // published in the 90's and 00's. Include the title and the year Eg:
 
     // [{ title: 'Harry Potter and the Sorcerer\'s Stone', year: 1997 },
     //  { title: 'Life of Pi', year: 2001 },
     //  { title: 'The Curious Incident of the Dog in the Night-Time', year: 2003 }]
 
     /* CODE GOES HERE */
+    const earlyBooks = books.filter(book => book.published >= 1990 && book.published < 2010).map(book => {
+     return {title: book.title, year: book.published}
+    })
+    return earlyBooks
 
     // Annotation:
-    // Write your annotation here as a comment
+    // filter checks for books that are within the date range (reminder to me to double check what the property is called in the data) and map returns only the two pieces of data they were looking for. THe books array was an array of objects and we wanted to get an array of objects back, which is why I picked filter.
   },
 
   getBooksByYear(books, year) {
@@ -509,9 +513,13 @@ const bookPrompts = {
     //  { title: 'The Curious Incident of the Dog in the Night-Time', year: 2003 }]
 
     /* CODE GOES HERE */
+    const booksAfter = books.filter(book => book.published > year).map(book => {
+      return {title: book.title, year: book.published}
+    })
+    return booksAfter
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Much similar to the one above, different condition to filter the books by, adds a parameter.
   }
 
 };
