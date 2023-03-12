@@ -101,8 +101,8 @@ If you'd like to keep track of your progress, feel free to use the checklist bel
 - [x] board games
 
 ### Double Data Sets
-- [ ] turing (instructors, cohorts)
-- [ ] bosses (bosses, sidekicks)
+- [x] turing (instructors, cohorts)
+- [x] bosses (bosses, sidekicks)
 - [ ] astronomy (constellations, stars)
 - [ ] ultima (weapons, characters)
 

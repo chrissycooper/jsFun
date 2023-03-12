@@ -87,7 +87,12 @@ const kittyPrompts = {
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
 
-
+// const clubsByPerson = members.reduce((acc, person) => {
+  //   clubsfilter = clubs.filter(club => club.members.includes(person)).map(club => club.club)
+  //   // console.log(person, clubsfilter)
+  //   acc[person] = clubsfilter
+  //   return acc
+  // }, {})
 
 
 
@@ -116,14 +121,16 @@ const clubPrompts = {
 
     //for each of the members we want to go through each club object and check if they are in the members property, if so we want to add that club.name to an array that belongs to the member
 
-  const clubsByPerson = members.reduce((acc, person) => {
-    clubsfilter = clubs.filter(club => club.members.includes(person)).map(club => club.club)
-    // console.log(person, clubsfilter)
-    acc[person] = clubsfilter
-    return acc
-  }, {})
+  
 
+    // console.log(members)
 
+    const clubsByPerson = members.reduce((acc, person) => {
+      const personsClubs = clubs.filter(club => club.members.includes(person)).map(club => club.club)
+      acc[person] = personsClubs
+      return acc
+    }, {})
+    // console.log(clubsByPerson)
 
     //if each club.members includes that name, then add it to the array
 
@@ -850,10 +857,12 @@ const boardGamePrompts = {
     // note: do not worry about rounding your result.
 
     /* CODE GOES HERE */
-    const avg = boardGames[type].reduce((acc, game) => {
-      return acc + game.rating
+    //add them and devide by the length of that type array
+    const average = boardGames[type].reduce((acc, game) => {
+      acc += game.rating
+      return acc
     }, 0)
-    return avg/boardGames[type].length
+    return average/boardGames[type].length
 
     // Annotation:
     // we set a variable (avg) equal to the boardGames object's key that is passed in to access a specific array. Reduce is being run on that array to add upp all the ratings. The accumulator is set to zero at first, and then the currentValue(game object) is being used to acces that rating property. 
@@ -866,23 +875,18 @@ const boardGamePrompts = {
     // note: do not worry about rounding your result.
 
     /* CODE GOES HERE */
-    const avg = boardGames[type].filter((game) => {
-      return game.maxPlayers === maximumPlayers
-    }).reduce((acc, game) => {
-      return acc + game.rating
+    const numPlayers = boardGames[type].filter(game => game.maxPlayers === maximumPlayers)
+    
+    const avg = numPlayers.reduce((acc, game) => {
+      acc += game.rating
+      return acc
     }, 0)
-
-    return avg
+    return avg/numPlayers.length
 
     // Annotation:
     // Very similar scenario to the one beofre, though here we are adding another iterator (filter) to remove any games that don't match the max players passed in. this could easily be made more inclusive by changing the strict equals to be either queries for less players or more players
   }
 };
-
-
-
-
-
 
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
@@ -920,9 +924,18 @@ const turingPrompts = {
     // ]
 
     /* CODE GOES HERE */
+    //for each instructor, find the cohort that matches modules, return studentCount
+
+    const studentsPerTeach = instructors.map(instructor => {
+      const mod = cohorts.find(cohort => instructor.module === cohort.module)
+      return {name: instructor.name, studentCount: mod.studentCount}
+    })
+
+    // console.log(studentsPerTeach)
+    return studentsPerTeach
 
     // Annotation:
-    // Write your annotation here as a comment
+    // The module property of both data sets needed to be compared to one another. We wanted a new array of all the teachers, so map was most appropriate. Inside the map, for each teacher I used find to grab the first object that had the same module as the teacher. then returned a new object that utilized a property from each data set. 
   },
 
   studentsPerInstructor() {
@@ -933,9 +946,24 @@ const turingPrompts = {
     // }
 
     /* CODE GOES HERE */
+    //we need to know how many students, divide the number of students by the number of teachers, then return an object - maybe reduce for the last step
+
+    const mod1Teachers = instructors.filter(inst => inst.module === 1)
+    const mod2Teachers = instructors.filter(inst => inst.module === 2)
+    const mod3Teachers = instructors.filter(inst => inst.module === 3)
+    const mod4Teachers = instructors.filter(inst => inst.module === 4)
+    
+    const studentsPerTeach = cohorts.reduce((acc, cohort) => {
+      const teachers = instructors.filter(inst => inst.module === cohort.module)
+      acc[`cohort${cohort.cohort}`] = cohort.studentCount/teachers.length
+      return acc
+    }, {})
+
+    // console.log(studentsPerTeach)
+    return studentsPerTeach
 
     // Annotation:
-    // Write your annotation here as a comment
+    // i took this very step by step, and I first worked on the problem of figuring out how many teachers for each cohort, and used these filters. Then I used reduce to work out the math, and got the acc set up, but I had a hard time accessing the filters in a way that was flexible (since each iteration should use a different mod number/different teachers variable). So I pivoted to putting the filter inside the reduce and comparing the instructor module property to the cohort module property and dividing the nubmer of students by the length of that teachers array. 
   },
 
   modulesPerTeacher() {
@@ -954,9 +982,32 @@ const turingPrompts = {
     //   }
 
     /* CODE GOES HERE */
+   
 
+    const test = instructors.reduce((acc, inst) => {
+      acc[inst.name] = []
+      
+      const mods = cohorts.forEach((cohort) => {
+        let topic;
+        inst.teaches.forEach(item => {
+          topic = cohort.curriculum.find(topic => topic === item);
+          // console.log(inst.name, topic)
+          if(topic && !acc[inst.name].includes(cohort.module)){
+            acc[inst.name].push(cohort.module);
+          }
+        })
+      })
+      return acc
+    }, {})
+
+    // console.log(test)
+    return test
     // Annotation:
-    // Write your annotation here as a comment
+    // For the one that's working, we have a reduce on the instructors array to create an object. Then we are creating a property based on the teacher and setting it equal to an empty array. Then for each iteration of the current teacher, we are iterating through the cohorts array. For each cohort we are then looping through the instructors.teaches array and finding the first topic in the cohort.curriculum array that matches the item. Then there's a check for if that was able to find anything, if it did find a match AND the property for this teacher that we made on line 1011 doesn't already include it, then we are pushing the cohort.module into the property's array.
+
+    //Okay lets go through this one whol iteration and follow the data through. We're calling reudce on instructors, the first object we are working on is Pam. A property "pam" is created on the accumulator and set to an empty array.A variable is created (mods), that loops through the cohorts array. The first is mod1. topic is initialized.  Pam's teaches array is then being looped through, the first item is "scope", the variable topic is reassigned to the first item in mod1's curriculum array that matches 'scope'. it will be undefined because 'scope' is not in that array. So then we have a check for if topic is truthy and the accumulator of the pam property doesnt already include the cohort.module. topic is falsy, so it will not push the cohort module into the array. 
+    //we're still in this loop so it'll check for recursion on the mod 1 object's topics array, it isnt there so topic is still falsy. Then it will check for node which is also not there. Pam's property is still empty at this point. We've now exited this inner loop, having gone through all of Pam's topics, and we will move on to the mod 2 object. New topic is initialized. We loop back through Pam's topics looking for the first item that matches one of her topics. Scope will be found for mod2. So topic will be set to 'scope'. Topic is truthy, and the property doesn't yet have '2' in it, so it will be pushed to her array. We will continue with recursion even though it's already there. It will be found, but the if statement will keep it from being added to the array. Node will not be found, so we will move on to mod3. None of them matcvh so we move on to mod4. SCope and recursion wont be found, but node will. '4' will be added. Then we will exit the cohorts loop, and return the acc object, and move on to the next instructor. 
+
   },
 
   curriculumPerTeacher() {
@@ -970,9 +1021,23 @@ const turingPrompts = {
     // }
 
     /* CODE GOES HERE */
+    // for each curriculum topic, create a property with an empty array if it doesn't already exist, and loop through the instructors to see if their teaches property includes the topic, and add their name to the array if yes
+     return cohorts.reduce((acc, cohort) => {
+      cohort.curriculum.forEach(topic => {
+        if(!acc[topic])
+        acc[topic] =[]
+        instructors.forEach(teacher =>{
+          if(teacher.teaches.includes(topic) && !acc[topic].includes(teacher.name)){
+            acc[topic].push(teacher.name)
+          }
+        })
+      })
+      return acc
+    }, {})
+
 
     // Annotation:
-    // Write your annotation here as a comment
+    //The reduce is running through the cohorts array of objects. For each cohort, it is looping through it's curriculum property and creating a new property for the accumulator and setting it to an empty array. Then inside that loop for the curriculum topics, it is looping through the teachers array of objects and checking if that teacher's teaches array inlucdes the topic. If it does and the accumulator property for that topic doesnt already include it, then we are pushing the teacher's name to the property. 
   }
 };
 
@@ -1004,6 +1069,20 @@ const bossPrompts = {
     // ]
 
     /* CODE GOES HERE */
+    const bossKeys = Object.keys(bosses)
+
+    const hotdogs = bossKeys.reduce((acc, boss) => {
+      
+      const pals = sidekicks.filter(pal => pal.boss === bosses[boss].name).reduce((acc, pal) => {
+        return acc += pal.loyaltyToBoss
+      }, 0);
+      
+      acc.push({bossName: bosses[boss].name, sidekickLoyalty: pals})
+      return acc
+    }, [])
+
+    
+    return hotdogs
 
     // Annotation:
     // Write your annotation here as a comment
