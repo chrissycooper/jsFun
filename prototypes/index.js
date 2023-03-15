@@ -1108,8 +1108,7 @@ const bossPrompts = {
 // DATASET: constellations, stars } from ./datasets/astronomy
 const astronomyPrompts = {
   starsInConstellations() {
-    // Return an array of all the star objects that appear in any of the constellations
-    // listed in the constellations object e.g.
+    // Return an array of all the star objects that appear in any of the constellations listed in the constellations object e.g.
     // [
     //   { name: 'Rigel',
     //     visualMagnitude: 0.13,
@@ -1138,9 +1137,43 @@ const astronomyPrompts = {
     // ]
 
     /* CODE GOES HERE */
+    //reduce stars, might need Object.keys for constellations
+    //check each star to see if it's name property is listed in each of the constellation's starnames property
+
+    const constKeys = Object.keys(constellations)
+
+    allAltNames = constKeys.reduce((acc, constellation) => {
+      constellations[constellation].alternateNames.forEach(name => {
+          acc.push(name)
+      })
+      return acc
+    }, [])
+    
+    const filteredStars = []
+    allAltNames.forEach(name => {
+      let theseStars = stars.filter(star => star.constellation === name)
+      if(theseStars.length){
+        filteredStars.push(theseStars)
+      }
+    })
+    
+    return filteredStars.flat()
+
+    // const starMatches = stars.reduce((acc, star) => {
+    //   allAltNames.forEach(key => {
+    //    if(star.constellation === key){
+    //     acc.push(star)
+    //    }
+    //   })
+    //   return acc
+    // }, [])
+    // console.log(starMatches)
+    // return starMatches
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Ugh it came out out of order so I had to change the order of the data objects. I'm not sure why the test wants it to be betelgeuse before Achernar. I guess if we used the alternate names it might work. First time around it was a really simple reduce using the keys of the constellation object to filter the stars.
+    //To get them into the right order I created a list of all the alternate names of the constellations. Then looped through those names and filtered (instead of find, since I knew two of them were in the same constellation) for the star.constellation propoerty matching the current name. If that resulted to more than an empty array (i.e. if the array length was truthy or more than zero) then add the array to the array I hope to return. I returned that array flattened one level and that satisfied the test. 
+
   },
 
   starsByColor() {
