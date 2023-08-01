@@ -1188,7 +1188,16 @@ const astronomyPrompts = {
     // }
 
     /* CODE GOES HERE */
+    const starColors = stars.reduce((acc, star) => {
+      if (acc[star.color]){
+        acc[star.color].push(star);
+      } else {
+        acc[star.color] = [star];
+      }
+      return acc
 
+    }, {})
+    return starColors;
     // Annotation:
     // Write your annotation here as a comment
   },
@@ -1211,8 +1220,16 @@ const astronomyPrompts = {
 
     /* CODE GOES HERE */
 
+    const sorted = stars.sort((a, b) => {
+      return a.visualMagnitude - b.visualMagnitude
+    }).reduce((acc, cv) => {
+      cv.constellation && acc.push(cv.constellation)
+      return acc
+    }, [])
+    return sorted
+
     // Annotation:
-    // Write your annotation here as a comment
+    // First this sorts the star objects by visual magnitude, using the long form of the sort method that allows us to define what part of the object to sort by. Then the sorted array is reduced down to just the constellation property. line 1226 is performing a truthiness check since one of the stars has an empty string as the constellation name. 
   }
 };
 
