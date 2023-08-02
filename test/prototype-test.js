@@ -760,7 +760,7 @@ describe("PROTOTYPES", () => {
   });
 
   describe("Ultima Prompts", () => {
-    it.skip("totalDamage", () => {
+    it("totalDamage", () => {
       const e = ultimaPrompts.totalDamage();
 
       expect(e).to.deep.equal(113)

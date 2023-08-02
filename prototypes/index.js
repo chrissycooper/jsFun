@@ -1257,9 +1257,21 @@ const ultimaPrompts = {
     // Answer => 113
 
     /* CODE GOES HERE */
+    const charactersWeaps = characters.reduce((acc, cv) => {
+      acc.push(cv.weapons)
+      return acc
+    }, []).flat()
+
+    const totalDamage = charactersWeaps.reduce((acc, cv) => {
+      acc += weapons[cv].damage
+      return acc
+    }, 0)
+    return totalDamage
 
     // Annotation:
-    // Write your annotation here as a comment
+    // So this first creates an array of all the weapons from all the characters and flattens it. Then on line 1265, we're iterating through that array and totalling up all the damage for all of those weapons. 
+    //I'm thinking about other ways we could solve this. Keep a number tally of each weapons by character and then tally it up based on that, doesn't seem more efficient. Do object literals take up more memory than arrays?
+
   },
 
   charactersByTotal() {
