@@ -1260,13 +1260,13 @@ const ultimaPrompts = {
     const charactersWeaps = characters.reduce((acc, cv) => {
       acc.push(cv.weapons)
       return acc
-    }, []).flat()
+    }, []).flat();
 
     const totalDamage = charactersWeaps.reduce((acc, cv) => {
       acc += weapons[cv].damage
       return acc
     }, 0)
-    return totalDamage
+    return totalDamage;
 
     // Annotation:
     // So this first creates an array of all the weapons from all the characters and flattens it. Then on line 1265, we're iterating through that array and totalling up all the damage for all of those weapons. 
